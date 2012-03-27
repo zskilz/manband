@@ -5,7 +5,8 @@ Start/pause screen
 		CONTINUE - not available if no game started...
 		START NEW GAME 
 			 
-weapon select
+*weapon select
+	update clip display 
 *fix melee for small characters
 particles for gore and structure hits
 structure class

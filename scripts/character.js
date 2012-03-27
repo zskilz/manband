@@ -205,6 +205,9 @@ Character.prototype.pickUp = function(someLoot)
     if(someLoot.lootClass==LOOTCLASSES.armour){
     }
 
+    if(this.pickUpCB){
+        this.pickUpCB(someLoot);
+    }
 
 }
 

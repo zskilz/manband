@@ -18,7 +18,6 @@ var stats,
     shadowMaterial,
     mouseX = 0, mouseY = 0;
 
-234 234 23 4we wt ew awet 
 
 //the keys
 var keyMap = {};
@@ -68,6 +67,51 @@ $(document).ready(function() {
 
     }, 20);
 })
+
+var playerWeapons = ['p'];
+var currWeapon = 0;
+playerPickUpCB = function(someLoot) {
+    console.assert(someLoot);
+    if(someLoot.lootClass === LOOTCLASSES.weapon) {
+         var c = String.fromCharCode(someLoot.code);
+        if(playerWeapons.indexOf(c)===-1){
+            playerWeapons.push(c);
+            playerWeapons.sort();
+            updateWeaponSelect();
+        }
+
+    }
+}
+
+updateWeaponSelect = function() {
+    var weaponSelect = $('#weaponSelect');
+    var htmlStr = '';
+    for(var i = 0,weapon; weapon = playerWeapons[i];i++){
+        if(i===currWeapon){
+            htmlStr += '<span class="currWeapon">'+ weapon + '</span> ';
+        }else{
+            htmlStr +=  weapon + ' ';
+        }
+    }
+    weaponSelect.html(htmlStr);
+    
+}
+
+mouseWheelEventHandler = function(event, delta, deltaX, deltaY) {
+    if(playerWeapons.length){
+        currWeapon += delta;
+        currWeapon %= playerWeapons.length;
+    
+        if(currWeapon < 0) {
+            currWeapon += playerWeapons.length;
+        }
+
+        updateWeaponSelect();
+        player.setWeapon(playerWeapons[currWeapon]);
+    }
+    
+}
+
 
 function newGame(container) {
     shadowMaterial = new THREE.MeshDepthMaterial({
@@ -157,6 +201,7 @@ function newGame(container) {
     });
 
     spawnedCharacters[i] = player;
+    player.pickUpCB = playerPickUpCB;
 
     scene.phys.world().add({
         type : vphy.types.ACCELERATOR,
@@ -272,6 +317,10 @@ function initGame() {
         }
 
     });
+    
+    $(container).mousewheel(mouseWheelEventHandler );
+
+
     //document.addEventListener( 'touchstart', onDocumentTouchStart, false );
     //document.addEventListener( 'touchmove', onDocumentTouchMove, false );
     
