@@ -187,10 +187,10 @@ function newGame(container) {
     scene.phys.start();
 
     //gui
-    gui = new DAT.GUI({
+    gui = new dat.GUI({
         height : 24
     });
-    gui.toggle();
+    gui.close();
     gui.add(player.statMods, 'hp').min(0.01).max(0.99).step(0.05).name('Health points');
     gui.add(player.statMods, 'dex').min(0.01).max(0.99).step(0.05).name('Dexterity');
     gui.add(player.statMods, 'str').min(0.01).max(0.99).step(0.05).name('Strength');
@@ -226,11 +226,6 @@ function initGame() {
 
     container = $('#mainStage');
     //$('body').append( container );
-
-    
-
-    
-
 
     renderer = new THREE.WebGLRenderer({
         clearAlpha : 1
@@ -301,34 +296,6 @@ function onMouseUp(event) {
     event.preventDefault();
     //console.log("mouse up");
 }
-
-/*
-function onDocumentTouchStart( event ) {
-
-	if ( event.touches.length == 1 ) {
-
-		event.preventDefault();
-
-		mouseX = event.touches[ 0 ].pageX - windowHalfX;
-		mouseY = event.touches[ 0 ].pageY - windowHalfY;
-
-	}
-}
-
-function onDocumentTouchMove( event ) {
-
-	if ( event.touches.length == 1 ) {
-
-		event.preventDefault();
-
-		mouseX = event.touches[ 0 ].pageX - windowHalfX;
-		mouseY = event.touches[ 0 ].pageY - windowHalfY;
-
-	}
-
-}
-
-*/
 
 updateClipDisplay = function(character)
 {
