@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>three.js webgl experiment - manBand </title>
+	<meta charset="utf-8">
+    <style>
+        #ASCIICanvasRender{
+            position: absolute;
+            top: 75px;
+            left: 75px;
+        }
+
+        #mainStage{
+            position: absolute;
+            top: 5px; bottom: 5px;
+            left: 5px; right: 5px;
+        }
+
+         #playerClip,#weaponSelect{
+            font-family: arial;
+            font-size: 40px;
+            color: white;
+         }
+
+        #weaponSelect{
+            position: absolute;
+            top: 35px;
+            right: 155px;
+        }
+
+        #playerClip{
+            position: absolute;
+            top: 30px;
+            left: 155px;
+
+        }
+    </style>
+
+    <script src="scripts/contrib/jquery-1.7.1.js"></script>
+
+    <script src="scripts/contrib/three.js"></script>
+    <script src="scripts/contrib/Detector.js"></script>
+    <script src="scripts/contrib/Stats.js"></script>
+    <script src="scripts/contrib/ImprovedNoise.js"></script>
+
+    <script src="scripts/contrib/physics.js"></script>
+    <script src="scripts/contrib/THREEx.microphysics.js"></script>
+
+    <script src="scripts/contrib/DAT.GUI.js"></script>
+
+    <script src="scripts/worldman.js"></script>
+    <script src="scripts/things.js"></script>
+    <script src="scripts/ascitexutils.js"></script>
+    <script src="scripts/projectile.js"></script>
+    <script src="scripts/loot.js"></script>
+    <script src="scripts/character.js"></script>
+    <script src="scripts/manbandmain.js"></script>
+
+</head>
+<body>
+    <div id="loadingDIV">Loading Page... please be patient...</div>
+    <canvas id="ASCIICanvasRender"></canvas>
+    <div id="mainStage"></div>
+    <div id="weaponSelect"></div>
+    <div id="playerClip"></div>
+</body>
+</html>
