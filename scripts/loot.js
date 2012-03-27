@@ -1,4 +1,6 @@
-
+/**
+ * @author Petrus J Pretorius
+ */
 LOOTCLASSES = {//these are defined in things.js
     pickup:pickupClasses,
     weapon:weaponClasses,

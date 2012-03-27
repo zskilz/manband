@@ -1,0 +1,12 @@
+Start/pause screen
+	accessed with the "esc" key or by clicking on "menu"
+	load some scene for bg - at init
+	options: 
+		CONTINUE - not available if no game started...
+		START NEW GAME 
+			 
+weapon select
+*fix melee for small characters
+particles for gore and structure hits
+structure class
+	takes hits, spawns characters

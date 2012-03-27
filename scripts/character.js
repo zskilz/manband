@@ -1,4 +1,6 @@
-
+/**
+ * @author Petrus J Pretorius
+ */
 // default behaviours for characters
 defaultBehaviours = {
 
@@ -438,27 +440,27 @@ Character.prototype.live = function(timeDiff)
             this._prevExt = this.wepExt;
             //while attacking... check arcsweep
 
-            if(this.attack)
-            {
+     
+            if(this.attack) {
 
-                if(dExt>0){ //check the weapon extention and hit test...
-                    var dp = this.getWStat('dp')*this.effectiveness*dExt*(Math.sqrt(this.getStat('str')/100)*10 +1);
+                if(dExt > 0) {//check the weapon extention and hit test...
+                    var dp = this.getWStat('dp') * this.effectiveness * dExt * (Math.sqrt(this.getStat('str') / 100) * 10 + 1);
                     var tDist;
-                    var weaponExtent = (this.size*this.wepExt+this.weapon.size+this.size)/2;
-
-                    for(var i = 0, obj;obj = spawnedCharacters[i];i++){
+                    var weaponExtent = (this.size * this.wepExt + this.weapon.size )/2;
+                    
+                    for(var i = 0, obj; obj = spawnedCharacters[i]; i++) {
                         //obj.sprite.color.setHSV(0,1,1);
-                        if(obj!=this){
-                            hitLineSeg(function(){obj.takeHit(aimDir,dp);},this.position,aimDir,obj.position,obj.size,weaponExtent);
+                        if(obj != this) {
+                            
+                            hitLineSeg(function() {
+                                obj.takeHit(aimDir, dp);
+                            }, this.position, aimDir, obj.position, obj.size, weaponExtent);
 
                         }
                     }
                 }
-
-
-
-
             }
+
         }
 
         //perform attack

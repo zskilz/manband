@@ -1,3 +1,7 @@
+/**
+ * @author Petrus J Pretorius
+ */
+
 //stat helper
 calcStat = function(statMod,baseStat){
     return statMod*(baseStat.M-baseStat.m)+baseStat.m;

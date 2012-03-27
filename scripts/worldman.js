@@ -1,3 +1,7 @@
+/**
+ * @author Petrus J Pretorius
+ */
+
 var ARENA_GRID_WIDTH = 64,
     ARENA_GRID_HEIGHT = 64,
     ARENA_WIDTH = 2000,

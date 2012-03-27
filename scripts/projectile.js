@@ -1,4 +1,6 @@
-
+/**
+ * @author Petrus J Pretorius
+ */
 projectiles = [];
 Projectile = function(shooter, charChar, origin, dir) {
 	console.assert(shooter);

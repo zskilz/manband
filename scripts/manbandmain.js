@@ -1,4 +1,6 @@
-
+/**
+ * @author Petrus J Pretorius
+ */
 //global objects
 var stats,
     windowHalfX,
@@ -17,17 +19,18 @@ var stats,
     mouseX = 0, mouseY = 0;
 
 
+
 //the keys
 var keyMap = {};
-var gameCntrls = [ 'left', 'right' , 'up', 'down', 'attack' ];
+var gameCntrls = ['left', 'right', 'up', 'down', 'attack'];
 //default keys.
-var gameKeys = [37,39,38,40,64];//order matters, and need same amount as gameCntrls.
+var gameKeys = [37, 39, 38, 40, 64];
+//order matters, and need same amount as gameCntrls.
 var cntrlMap = {};
 //setup cntrlMap
-(function(){
-    for(var i=0,cntrl;cntrl=gameCntrls[i];i++)
-    {
-        cntrlMap[cntrl]=gameKeys[i];
+(function() {
+    for(var i = 0, cntrl; cntrl = gameCntrls[i]; i++) {
+        cntrlMap[cntrl] = gameKeys[i];
     }
 })();//to keep global scope clean... hahaha, I know. funny cos I'm messing it up so much.
 
@@ -38,15 +41,15 @@ checkKey = function(key)//todo: this can be expanded to deal with multiple bindi
     return true;
 }
 
-resizeRenderer = function(){
+resizeRenderer = function() {
     var elmnt = $('#mainStage');
     windowHalfX = elmnt.innerWidth();
     windowHalfY = elmnt.innerHeight();
     if(renderer) {
-        renderer.setSize( windowHalfX, windowHalfY );
+        renderer.setSize(windowHalfX, windowHalfY);
     }
-    if(camera){
-        camera.aspect = windowHalfX/windowHalfY;
+    if(camera) {
+        camera.aspect = windowHalfX / windowHalfY;
         camera.updateProjectionMatrix();
     }
     windowHalfX *= 0.5;
@@ -55,74 +58,62 @@ resizeRenderer = function(){
 
 $(window).resize(resizeRenderer);
 
-$(document).ready(function(){
+$(document).ready(function() {
     $('#loadingDIV').append('<br/>initializing Data...');
-    window.setTimeout(function(){
+    window.setTimeout(function() {
 
-        init();
+        initGame();
         $('#loadingDIV').remove();
-        requestAnimationFrame( animate );
+        requestAnimationFrame(animate);
 
-    },20);
-
+    }, 20);
 })
 
-
-var gui;
-function init() {
-    if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-
-    var container;
-    //var particles, geometry;
-
-	container = $( '#mainStage' );
-	//$('body').append( container );
-
-
-    shadowMaterial = new THREE.MeshDepthMaterial({opacity:0.0});
-//shadowMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) ;
+function newGame(container) {
+    shadowMaterial = new THREE.MeshDepthMaterial({
+        opacity : 0.0
+    });
+    //shadowMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) ;
 
     projector = new THREE.Projector();
-
-	scene = new THREE.Scene();
-	scene.fog = new THREE.FogExp2( 0x000000, 0.0008 );
-
-	camera = new THREE.PerspectiveCamera( 75, container.innerWidth() / container.innerHeight(), 1, 2000 );
-	camera.position.z = 1000;
-    camera.lookAt( new THREE.Vector3(0,0,0));
-	scene.add( camera );
-
-    projPlane = new THREE.Mesh( new THREE.PlaneGeometry( ARENA_WIDTH*2, ARENA_HEIGHT*2, 3, 3 ), new THREE.MeshBasicMaterial( { color: 0xffffff, opacity: 0.8, transparent: true, wireframe: true } ) );
-	projPlane.lookAt( camera.position );
-	projPlane.visible = true;
-    scene.add( projPlane );
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+    camera = new THREE.PerspectiveCamera(75, container.innerWidth() / container.innerHeight(), 1, 2000);
+    camera.position.z = 1000;
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    scene.add(camera);
+    projPlane = new THREE.Mesh(new THREE.PlaneGeometry(ARENA_WIDTH * 2, ARENA_HEIGHT * 2, 3, 3), new THREE.MeshBasicMaterial({
+        color : 0xffffff,
+        opacity : 0.8,
+        transparent : true,
+        wireframe : true
+    }));
+    projPlane.lookAt(camera.position);
+    projPlane.visible = true;
+    scene.add(projPlane);
     //addSun(scene);
 
-	var directionalLight = new THREE.DirectionalLight( 0xffffff );
-	directionalLight.position.set( 200, 300, 800 );
+    var directionalLight = new THREE.DirectionalLight(0xffffff);
+    directionalLight.position.set(200, 300, 800);
 
     directionalLight.castShadow = true;
-    directionalLight.shadowCameraLeft = -ARENA_WIDTH/2;
-    directionalLight.shadowCameraRight = ARENA_WIDTH/2;
-    directionalLight.shadowCameraTop = ARENA_HEIGHT/2;
-    directionalLight.shadowCameraBottom = -ARENA_HEIGHT/2;
+    directionalLight.shadowCameraLeft = -ARENA_WIDTH / 2;
+    directionalLight.shadowCameraRight = ARENA_WIDTH / 2;
+    directionalLight.shadowCameraTop = ARENA_HEIGHT / 2;
+    directionalLight.shadowCameraBottom = -ARENA_HEIGHT / 2;
     directionalLight.shadowCameraNear = 150;
     directionalLight.shadowCameraFar = 2000;
 
-	//directionalLight.shadowBias = -0.00022;
-	directionalLight.shadowDarkness = 0.5;
+    //directionalLight.shadowBias = -0.00022;
+    directionalLight.shadowDarkness = 0.5;
 
-	directionalLight.shadowMapWidth = 1024;
-	directionalLight.shadowMapHeight = 1024;
-	scene.add( directionalLight );
+    directionalLight.shadowMapWidth = 1024;
+    directionalLight.shadowMapHeight = 1024;
+    scene.add(directionalLight);
 
-	scene.phys	= new THREEx.Microphysics({
-		//timeStep	: 1/120
-	});
-
-
-
-
+    scene.phys = new THREEx.Microphysics({
+        //timeStep  : 1/120
+    });
 
     //make the terrain...
     currentTile = new TileBlock(100);
@@ -132,148 +123,180 @@ function init() {
 
     //init the character textrure source
     ASCIITexture = ASCIITextSrc();
-
     //init the sprites
-    var teamColor = {'us':[0.3,1,1],'them':[0,1,1]};
-    var teams = ['us','them'];
+    var teamColor = {
+        'us' : [0.3, 1, 1],
+        'them' : [0, 1, 1]
+    };
+    var teams = ["us","them"];
     var numChars = ASCIITexture.codeBuffer.length;
     var spawnParams = new Array(numChars);
-    for( var paramID = 0; paramID<16; paramID++ )
-    {
-        var team = 'them';//teams[~~(Math.random()*teams.length)];
-        spawnParams[paramID] = { color: teamColor[team],
-                                code:(ASCIITexture.codeBuffer[Math.floor(Math.random()*numChars)]),
-                                size: Math.random()*50 + 50,
-                                charState: 'idle',//for AI...
-                                team: team };
+    for(var paramID = 0; paramID < 16; paramID++) {
+        var team = 'them';
+        //teams[~~(Math.random()*teams.length)];
+        spawnParams[paramID] = {
+            color : teamColor[team],
+            code : (ASCIITexture.codeBuffer[Math.floor(Math.random() * numChars)]),
+            size : Math.random() * 50 + 50,
+            charState : 'idle', //for AI...
+            team : team
+        };
     }
 
     var uvScale = ASCIITexture.uvScale;
 
-	for (var params,i = 0; params = spawnParams[i]; i ++ ) {
-        spawnedCharacters[i] = new Character(scene,params);
+    for(var params, i = 0; params = spawnParams[i]; i++) {
+        spawnedCharacters[i] = new Character(scene, params);
 
-	}
-
-    player = new Character(scene,{ color: teamColor[ 'us' ],
-                                code:('@').charCodeAt(0),
-                                size: 100,
-                                team: 'us' });
+    }
+    player = new Character(scene, {
+        color : teamColor['us'],
+        code : ('@').charCodeAt(0),
+        size : 100,
+        team : 'us'
+    });
 
     spawnedCharacters[i] = player;
 
     scene.phys.world().add({
-			type: vphy.types.ACCELERATOR,
-			perform: function(){
-                var a = new THREE.Vector3(0,0,0);
-				if( keyMap[cntrlMap['right']] )	a.x += 1;
-				if( keyMap[cntrlMap['left']]  )	a.x -= 1;
-				if( keyMap[cntrlMap['up']] )	a.y += 1;
-				if( keyMap[cntrlMap['down']]  )	a.y -= 1;
-                if(!player.dead) player.move(a);
-			}
-		});
-
-    //test obj
-
-
-
-
-	renderer = new THREE.WebGLRenderer( { clearAlpha: 1 } );
-
-	resizeRenderer();//renderer.setSize( container.innerWidth(), container.innerHeight() );
-    //renderer.shadowMapAutoUpdate = true;
-    renderer.shadowMapEnabled = true;
-    renderer.shadowMapSoft = true;
-    //renderer.sortObjects = false;
-	container.append( renderer.domElement );
-
-	stats = new Stats();
-	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.top = '0px';
-	container.append( stats.domElement );
-
-	container.mousemove(onDocumentMouseMove);
-    container.mousedown(onMouseDown);
-    container.mouseup(onMouseUp);
-    //so we can use the right click for game-play
-    container.on('contextmenu',function(){return false;});
-
-    $(document).keydown( function(e){
-
-                                 if(e.which===27){
-                                    // $('#controlInput').blur();
-                                     return;
-                                 }
-
-                                 if(checkKey(e.which)){
-                                     keyMap[e.which] = true;
-                                     e.preventDefault();
-                                 }
-
-
-                             });
-
-    $(document).keyup( function(e){
-                               if(checkKey(e.which)){
-                                   keyMap[e.which] = false;
-                                   e.preventDefault();
-                               }
-
-                           });
-	//document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-	//document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+        type : vphy.types.ACCELERATOR,
+        perform : function() {
+            var a = new THREE.Vector3(0, 0, 0);
+            if(keyMap[cntrlMap['right']])
+                a.x += 1;
+            if(keyMap[cntrlMap['left']])
+                a.x -= 1;
+            if(keyMap[cntrlMap['up']])
+                a.y += 1;
+            if(keyMap[cntrlMap['down']])
+                a.y -= 1;
+            if(!player.dead)
+                player.move(a);
+        }
+    });
+    
     // gravity
-	gravity	= new vphy.LinearAccelerator({
-		x	: 0,
-		y	: 0,
-		z	: -9.8*(1/scene.phys._timeStep),
-	});
-
+    gravity = new vphy.LinearAccelerator({
+        x : 0,
+        y : 0,
+        z : -9.8 * (1 / scene.phys._timeStep),
+    });
 
     scene.phys.world().add(gravity);
 
     scene.phys.start();
 
     //gui
-    gui = new DAT.GUI({height:24});
+    gui = new DAT.GUI({
+        height : 24
+    });
     gui.toggle();
-    gui.add(player.statMods,'hp').min(0.01).max(0.99).step(0.05).name('Health points');
-    gui.add(player.statMods,'dex').min(0.01).max(0.99).step(0.05).name('Dexterity');
-    gui.add(player.statMods,'str').min(0.01).max(0.99).step(0.05).name('Strength');
-    gui.add(player.statMods,'spd').min(0.01).max(0.99).step(0.05).name('Speed');
+    gui.add(player.statMods, 'hp').min(0.01).max(0.99).step(0.05).name('Health points');
+    gui.add(player.statMods, 'dex').min(0.01).max(0.99).step(0.05).name('Dexterity');
+    gui.add(player.statMods, 'str').min(0.01).max(0.99).step(0.05).name('Strength');
+    gui.add(player.statMods, 'spd').min(0.01).max(0.99).step(0.05).name('Speed');
     gui.add(player, 'effectiveness').listen();
     gui.add(player, 'HP').listen();
     //test sprite..
-    testSprite = makeSprite(('*').charCodeAt(0),100,[0,0,1],[0,0,400]);
+    testSprite = makeSprite(('*').charCodeAt(0), 100, [0, 0, 1], [0, 0, 400]);
     testSprite.mergeWith3D = false;
     scene.add(testSprite);
 
     //some test loot...
-    testLoots = ['!',')','f','F'];
-    for(var i =0;i<10;i++)
-    {
-        theLoot.push(new LootItem(scene,{code:(testLoots[~~(Math.random()*testLoots.length)]).charCodeAt(0),lootClass:LOOTCLASSES.weapon}));
-
+    testLoots = ['!', ')', 'f', 'F'];
+    for(var i = 0; i < 10; i++) {
+        theLoot.push(new LootItem(scene, {
+            code : (testLoots[~~(Math.random() * testLoots.length)]).charCodeAt(0),
+            lootClass : LOOTCLASSES.weapon
+        }));
 
     }
 
     $('#playerClip').hide();
 }
 
-function onDocumentMouseMove( event ) {
+var gui;
 
-	mouseX = (event.clientX - windowHalfX)/windowHalfX;
-	mouseY = -(event.clientY - windowHalfY)/windowHalfY;
+function initGame() {
+    if(!Detector.webgl)
+        Detector.addGetWebGLMessage();
+
+    var container;
+    //var particles, geometry;
+
+    container = $('#mainStage');
+    //$('body').append( container );
+
+    
+
+    
+
+
+    renderer = new THREE.WebGLRenderer({
+        clearAlpha : 1
+    });
+
+    resizeRenderer();
+    //renderer.setSize( container.innerWidth(), container.innerHeight() );
+    //renderer.shadowMapAutoUpdate = true;
+    renderer.shadowMapEnabled = true;
+    renderer.shadowMapSoft = true;
+    //renderer.sortObjects = false;
+    container.append(renderer.domElement);
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    container.append(stats.domElement);
+
+    container.mousemove(onDocumentMouseMove);
+    container.mousedown(onMouseDown);
+    container.mouseup(onMouseUp);
+    //so we can use the right click for game-play
+    container.on('contextmenu', function() {
+        return false;
+    });
+
+    $(document).keydown(function(e) {
+
+        if(e.which === 27) {
+            // $('#controlInput').blur();
+            return;
+        }
+
+        if(checkKey(e.which)) {
+            keyMap[e.which] = true;
+            e.preventDefault();
+        }
+
+    });
+
+    $(document).keyup(function(e) {
+        if(checkKey(e.which)) {
+            keyMap[e.which] = false;
+            e.preventDefault();
+        }
+
+    });
+    //document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+    //document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+    
+    newGame(container);
+    
+}
+
+function onDocumentMouseMove(event) {
+    mouseX = (event.clientX - windowHalfX) / windowHalfX;
+    mouseY = -(event.clientY - windowHalfY) / windowHalfY;
 
 }
 
-function onMouseDown(event){
+function onMouseDown(event) {
     player.attack = true;
     event.preventDefault();
     //console.log("mouse down");
 }
-function onMouseUp(event){
+
+function onMouseUp(event) {
     player.attack = false;
     event.preventDefault();
     //console.log("mouse up");
