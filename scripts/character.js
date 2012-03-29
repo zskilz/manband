@@ -183,20 +183,16 @@ Character.prototype.pickUp = function(someLoot)
     if(someLoot.lootClass===LOOTCLASSES.weapon){
         if(this.baseClass.arm===undefined||this.baseClass.arm){
 
-            if(this.weapon===undefined||this.weaponCode===this.baseClass.defWep.charCodeAt(0)){//if no weapon or default weapon
+           
+            if(this.weapon === undefined || this.weapon.code === this.baseClass.defWep.charCodeAt(0)) {//if no weapon or default weapon
                 //just pick it up and arm it..
                 this.setWeapon(String.fromCharCode(someLoot.code));
-            }else{
-                if(someLoot.loot.dp.M>this.weapon.dp.M)//is it more damage worthy?
-                {
-                    this.disArm();//stash what we have...
-                    this.setWeapon(String.fromCharCode(someLoot.code));//set the new weapon
-                }else{
-                    //stick it in the loot
-                    teamLoot[this.team][someLoot.code].q += 1;
-                }
-
+            } else {
+                this.disArm();
+                //stash what we have...
+                this.setWeapon(String.fromCharCode(someLoot.code));
             }
+
         }
     }else{
         //stick it in the loot
@@ -232,7 +228,7 @@ Character.prototype.getStat = function(stat)
 
 Character.prototype.getWStat = function(stat)
 {
-    if(this.weapon===undefined||this.weapon[stat]===undefined)
+    if(this.weapon===undefined||this.weapon.data[stat]===undefined)
         return undefined;
     if(this.statMods[this.weapon]===undefined) {
         this.statMods[this.weapon] = {};
@@ -240,7 +236,7 @@ Character.prototype.getWStat = function(stat)
     if(this.statMods[this.weapon][stat]===undefined) {
         this.statMods[this.weapon][stat] = 0;
     }
-    return calcStat(this.statMods[this.weapon][stat],this.weapon[stat]);//.M-this.weapon[stat].m)+this.weapon[stat].m;
+    return calcStat(this.statMods[this.weapon][stat],this.weapon.data[stat]);//.M-this.weapon[stat].m)+this.weapon[stat].m;
 }
 
 Character.prototype.updateEffectiveness = function()
@@ -292,12 +288,11 @@ Character.prototype.getTargetPos = function(){
 
 Character.prototype.disArm = function(){
      //stick it in the loot
-    if(!(this.weapon===undefined||this.weaponCode===this.baseClass.defWep.charCodeAt(0))){
-        if(this.weaponCode) teamLoot[this.team][this.weaponCode].q += 1;
+    if(!(this.weapon===undefined||this.weapon.code===this.baseClass.defWep.charCodeAt(0))){
+        if(this.weapon.code) teamLoot[this.team][this.weapon.code].q += 1;
     }
     //clear
     this.weapon = undefined;
-    this.weaponCode = undefined;
     if(this.weaponSprite){
         this.remove(this.weaponSprite);
     }
@@ -306,21 +301,25 @@ Character.prototype.disArm = function(){
 }
 
 Character.prototype.dropLoot = function(){
-    if(!(this.weapon===undefined||this.weaponCode===this.baseClass.defWep.charCodeAt(0))){
+    if(!(this.weapon===undefined||this.weapon.code===this.baseClass.defWep.charCodeAt(0))){
         var pos = this.getPos();
-        new LootItem(scene,{code:this.weaponCode,lootClass:LOOTCLASSES.weapon,pos:[pos.x,pos.y]});
-        this.weaponCode = undefined;
+        new LootItem(scene,{code:this.weapon.code,lootClass:LOOTCLASSES.weapon,pos:[pos.x,pos.y]});
+        this.weapon.code = undefined;
     }
     this.disArm();
 }
 
 Character.prototype.setWeapon = function(WepChar){
-    this.weapon = weaponClasses[WepChar];
-    this.weaponCode = WepChar.charCodeAt(0);
+    this.weapon = {};//make a new container for this character to store weapon data
+    
+    this.weapon.data = weaponClasses[WepChar];
+    this.weapon.code = WepChar.charCodeAt(0);
+    if(this.weapon.data.clip) this.weapon.currentClip = ~~(this.getWStat('clip'));
+            
     if(this.weaponSprite) {
         this.remove(this.weaponSprite);
     }
-    this.weaponSprite = makeSprite(this.weaponCode,this.weapon.size,[0,0,1],[0,0,10]);
+    this.weaponSprite = makeSprite(this.weapon.code,this.weapon.data.size,[0,0,1],[0,0,10]);
     this.add(this.weaponSprite);
     if(this.aimPoint===undefined) this.aimPoint = new THREE.Vector3(Math.random()*200,Math.random()*200,Math.random()*200).addSelf(this.getPos());
 
@@ -349,14 +348,14 @@ Character.prototype.doAttack = function(timeDiff)
     if(fa!==undefined)
     {
         //get some ammo...
-        var ammo = ammoClasses[this.weapon.ammo];
+        var ammo = ammoClasses[this.weapon.data.ammo];
 
-        if(this.weapon.clip){
-            if(this.weapon.currentClip===undefined) this.weapon.currentClip = ~~(this.getWStat('clip'));
+        if(this.weapon.data.clip){
             this.weapon.currentClip--;
             if(this.weapon.currentClip < 0){//reload
                 this.attackTimeout = this.getWStat('rl');
                 this.weapon.currentClip = ~~(this.getWStat('clip'));
+                if(this.reloadCB) this.reloadCB();
             }
         }
 
@@ -364,12 +363,12 @@ Character.prototype.doAttack = function(timeDiff)
         var dirWithFaAdj = new THREE.Vector3((Math.random()-0.5)*fa,(Math.random()-0.5)*fa,0);
         dirWithFaAdj.addSelf(dir).normalize();
         //shoot!
-        new Projectile(this,this.weapon.ammo,this.getPos(),dirWithFaAdj);
+        new Projectile(this,this.weapon.data.ammo,this.getPos(),dirWithFaAdj);
 
         console.log("You shoot!");
     }
 
-    this.wepExt = this.weapon.wepExt;
+    this.wepExt = this.weapon.data.wepExt;
 }
 
 Character.prototype.takeHit = function(force,hp)
@@ -435,7 +434,7 @@ Character.prototype.live = function(timeDiff)
             this.weaponSprite.position.copy(aimDir).multiplyScalar(this.size*this.wepExt/2);
             var rot = Math.acos(aimDir.x);
             if(aimDir.y<0) rot = -rot;
-            var rotOffset = this.weapon.rotOffset!==undefined?this.weapon.rotOffset:0;
+            var rotOffset = this.weapon.data.rotOffset!==undefined?this.weapon.data.rotOffset:0;
             this.weaponSprite.rotation = rot-Math.PI/2 + rotOffset;
             var dRot = rot - this._prevRot;
             this._prevRot = rot;
@@ -449,7 +448,7 @@ Character.prototype.live = function(timeDiff)
                 if(dExt > 0) {//check the weapon extention and hit test...
                     var dp = this.getWStat('dp') * this.effectiveness * dExt * (Math.sqrt(this.getStat('str') / 100) * 10 + 1);
                     var tDist;
-                    var weaponExtent = (this.size * this.wepExt + this.weapon.size )/2;
+                    var weaponExtent = (this.size * this.wepExt + this.weapon.data.size )/2;
                     
                     for(var i = 0, obj; obj = spawnedCharacters[i]; i++) {
                         //obj.sprite.color.setHSV(0,1,1);

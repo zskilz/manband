@@ -95,6 +95,7 @@ updateWeaponSelect = function() {
     }
     weaponSelect.html(htmlStr);
     
+    
 }
 
 mouseWheelEventHandler = function(event, delta, deltaX, deltaY) {
@@ -106,8 +107,9 @@ mouseWheelEventHandler = function(event, delta, deltaX, deltaY) {
             currWeapon += playerWeapons.length;
         }
 
-        updateWeaponSelect();
         player.setWeapon(playerWeapons[currWeapon]);
+        updateWeaponSelect();
+        if(player.weapon.currentClip) updateClipDisplay(player);
     }
     
 }
@@ -351,7 +353,7 @@ updateClipDisplay = function(character)
     var clip = character.weapon.currentClip;
     console.assert(character.weapon.currentClip);
     var html = '';
-    for(var i = 0 ; i < clip; i++) html += character.weapon.ammo;
+    for(var i = 0 ; i < clip; i++) html += character.weapon.data.ammo;
     $('#playerClip').html(html);
 }
 
