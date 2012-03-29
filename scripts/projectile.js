@@ -5,7 +5,7 @@ var projParticleData = {};
 initProjectileParticleGeom = function() {
     projParticleData.geometry = new THREE.Geometry();
     var vector;
-    for( i = 0; i < 100; i++) {
+    for( i = 0; i < 50; i++) {
         x = (Math.random() - 0.5) * 50;
         y = (Math.random() - 0.5) * 50;
         z = (Math.random() - 0.5) * 50;
@@ -30,11 +30,11 @@ makeProjParticleImpact = function(color, pos, dir) {
     console.assert(color);
     console.assert(pos);
     console.assert(dir);
-   
+
     var material = new THREE.ParticleBasicMaterial({
         size : 10,
-        blending: THREE.AdditiveBlending,
-        depthTest: false, 
+        blending : THREE.AdditiveBlending,
+        depthTest : true,
         transparent : true,
         map : projParticleData.map
     });
@@ -42,8 +42,8 @@ makeProjParticleImpact = function(color, pos, dir) {
 
     var particles = new THREE.ParticleSystem(projParticleData.geometry, material);
     particles.position.copy(pos);
-    particles.position.z = currentTile.getHeight(particles.position.x, particles.position.y);
-    particles._timeToLive = 2;
+    particles.position.z = currentTile.getHeight(particles.position.x, particles.position.y) + 50;
+    particles._timeToLive = 1;
     particles._dir = dir;
     projParticleSystems.push(particles);
     scene.add(particles);
@@ -57,10 +57,10 @@ animateProjParticles = function(timeDiff) {
             i--;
         } else {
             particles._timeToLive -= timeDiff;
-            var fact = (particles._timeToLive - 2) / 2;
+            var fact = (particles._timeToLive - 1);
             particles.scale.set(fact, fact, fact);
             //particles.position.addSelf(particles._dir);
-            particles.material.opacity = (1-fact)/30;
+            particles.material.opacity = (1 - fact) ;
         }
 
     }
@@ -129,7 +129,7 @@ Projectile.prototype.tick = function(timeDiff) {
         if(!obj.dead && (obj !== this.shooter)) {
             hit = hitLineSeg(function() {
                 obj.takeHit(dir, dp);
-                makeProjParticleImpact([0, 0.8, 0.5], pos, dir);
+
                 thisProj.remove();
             }, pos, dir, obj.position, obj.size, this._spd * timeDiff);
             //+ this.ammo.size);

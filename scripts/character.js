@@ -376,6 +376,7 @@ Character.prototype.takeHit = function(force,hp)
 
     this.HP -= hp;
     this.getBody().accelerate((force.x*hp)*1000,(force.y*hp)*1000,0);
+    makeProjParticleImpact([0, 0.8, 0.5], this.getPos(), force);
     console.log("Ouch "+hp+" damage taken, "+this.HP+" HP left.");
     if(this.HP < 0)
     {

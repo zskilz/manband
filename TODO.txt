@@ -8,6 +8,7 @@ Start/pause screen
 *weapon select
 	*update clip display 
 *fix melee for small characters
-particles for gore and structure hits
+*particles for gore and structure hits
+	temporary - gore needs much work.
 structure class
 	takes hits, spawns characters
