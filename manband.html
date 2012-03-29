@@ -1,80 +1,87 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>three.js webgl experiment - manBand </title>
-	<meta charset="utf-8">
-    <style>
-#ASCIICanvasRender {
-	position:absolute;
-	top:75px;
-	left:75px;
-}
-#mainStage {
-	position:absolute;
-	top:5px;
-	bottom:5px;
-	left:5px;
-	right:5px;
-}
-#playerClip, #weaponSelect {
-	font-family:arial;
-	font-size:40px;
-	color:white;
-}
-#weaponSelect {
-	position:absolute;
-	top:62px;
-	left:18px;
-	font-family: monospace;
-}
-#playerClip {
-	position:absolute;
-	top:30px;
-	left:155px;
-}
-#mainMenu {
-	position:absolute;
-	top:30px;
-	left:30px;
-	right:30px;
-}
-.currWeapon {
-	background:#555500;
-}
-    </style>
-
-    <script src="scripts/contrib/jquery-1.7.1.js"></script>
-    <script src="scripts/contrib/jquery.mousewheel.js"></script>
-
-    <script src="scripts/contrib/three.js"></script>
-    <script src="scripts/contrib/Detector.js"></script>
-    <script src="scripts/contrib/Stats.js"></script>
-    <script src="scripts/contrib/ImprovedNoise.js"></script>
-
-    <script src="scripts/contrib/physics.js"></script>
-    <script src="scripts/contrib/THREEx.microphysics.js"></script>
-
-    <script src="scripts/contrib/dat.gui.js"></script>
-
-    <script src="scripts/worldman.js"></script>
-    <script src="scripts/things.js"></script>
-    <script src="scripts/ascitexutils.js"></script>
-    <script src="scripts/projectile.js"></script>
-    <script src="scripts/loot.js"></script>
-    <script src="scripts/character.js"></script>
-    <script src="scripts/manbandmain.js"></script>
-
-</head>
-<body>
-    <div id="loadingDIV">Loading Page... please be patient...</div>
-    <canvas id="ASCIICanvasRender"></canvas>
-    <div id="mainStage"></div>
-    <div id="weaponSelect"></div>
-    <div id="playerClip"></div>
-    <div id="mainMenu">
-    	<div id="continue">Continue</div>
-    	<div id="startNew">Start New Game</div>
-    </div>
-    
-</body>
+	<head>
+		<title>three.js webgl experiment - manBand </title>
+		<meta charset="utf-8">
+		<style>
+			#ASCIICanvasRender {
+				position: absolute;
+				top: 75px;
+				left: 75px;
+			}
+			#mainStage {
+				position: absolute;
+				top: 5px;
+				bottom: 5px;
+				left: 5px;
+				right: 5px;
+			}
+			#playerClip, #weaponSelect {
+				font-family: arial;
+				font-size: 40px;
+				color: white;
+			}
+			#weaponSelect {
+				position: absolute;
+				top: 62px;
+				left: 18px;
+				font-family: monospace;
+			}
+			#playerClip {
+				position: absolute;
+				top: 30px;
+				left: 155px;
+			}
+			#mainMenu {
+				position: absolute;
+				top: 30px;
+				left: 30px;
+				right: 30px;
+				background: rgba(255,255,255,0.5);
+				font-size: 34px;
+				text-align: center;
+				height: 283px;
+			}
+			.currWeapon {
+				background: #555500;
+			}
+			.menuItem{
+				cursor: pointer;
+				display: block;
+			}
+			.menuItem:hover{
+				background: rgba(255,0,0,0.2);
+				cursor: pointer;
+			}
+		</style>
+		<script src="scripts/contrib/jquery-1.7.1.js"></script>
+		<script src="scripts/contrib/jquery.mousewheel.js"></script>
+		<script src="scripts/contrib/three.js"></script>
+		<script src="scripts/contrib/Detector.js"></script>
+		<script src="scripts/contrib/Stats.js"></script>
+		<script src="scripts/contrib/ImprovedNoise.js"></script>
+		<script src="scripts/contrib/physics.js"></script>
+		<script src="scripts/contrib/THREEx.microphysics.js"></script>
+		<script src="scripts/contrib/dat.gui.js"></script>
+		<script src="scripts/worldman.js"></script>
+		<script src="scripts/things.js"></script>
+		<script src="scripts/ascitexutils.js"></script>
+		<script src="scripts/projectile.js"></script>
+		<script src="scripts/loot.js"></script>
+		<script src="scripts/character.js"></script>
+		<script src="scripts/manbandmain.js"></script>
+	</head>
+	<body>
+		<div id="loadingDIV">
+			Loading Page... please be patient...
+		</div>
+		<canvas id="ASCIICanvasRender"></canvas>
+		<div id="mainStage"></div>
+		<div id="weaponSelect"></div>
+		<div id="playerClip"></div>
+		<div id="mainMenu">
+			<!--a id="continue" class="menuItem">Continue</a-->
+			<a id="startNew" class="menuItem">Start New Game</a>
+		</div>
+	</body>
 </html>

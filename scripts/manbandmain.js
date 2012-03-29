@@ -17,6 +17,7 @@ var stats,
     worldMouse,
     shadowMaterial,
     mouseX = 0, mouseY = 0;
+    paused = true;
 
 
 //the keys
@@ -174,7 +175,7 @@ function newGame(container) {
         'us' : [0.3, 1, 1],
         'them' : [0, 1, 1]
     };
-    var teams = ["us","them"];
+    var teams = ["us", "them"];
     var numChars = ASCIITexture.codeBuffer.length;
     var spawnParams = new Array(numChars);
     for(var paramID = 0; paramID < 16; paramID++) {
@@ -221,7 +222,7 @@ function newGame(container) {
                 player.move(a);
         }
     });
-    
+
     // gravity
     gravity = new vphy.LinearAccelerator({
         x : 0,
@@ -260,6 +261,9 @@ function newGame(container) {
     }
 
     $('#playerClip').hide();
+    paused = false;
+    $('#mainMenu').hide();
+
 }
 
 var gui;
@@ -302,6 +306,16 @@ function initGame() {
 
         if(e.which === 27) {
             // $('#controlInput').blur();
+            if(paused){
+                if(camera){
+                    paused = false;
+                    $('#mainMenu').hide();   
+                }
+            } else {
+                paused = true;
+                $('#mainMenu').show();
+            }
+            
             return;
         }
 
@@ -327,8 +341,10 @@ function initGame() {
     //document.addEventListener( 'touchmove', onDocumentTouchMove, false );
     
     initProjectileParticleGeom();
+    $('#startNew').click(function(){
+        newGame(container);    
+    });
     
-    newGame(container);
     
     
 }
@@ -340,15 +356,20 @@ function onDocumentMouseMove(event) {
 }
 
 function onMouseDown(event) {
-    player.attack = true;
-    event.preventDefault();
-    //console.log("mouse down");
+    if(player) {
+        player.attack = true;
+        event.preventDefault();
+        //console.log("mouse down");
+    }
 }
 
+
 function onMouseUp(event) {
-    player.attack = false;
-    event.preventDefault();
-    //console.log("mouse up");
+    if(player) {
+        player.attack = false;
+        event.preventDefault();
+        //console.log("mouse up");
+    }
 }
 
 updateClipDisplay = function(character)
@@ -360,61 +381,74 @@ updateClipDisplay = function(character)
     $('#playerClip').html(html);
 }
 
-var prevTime = 0;
-function animate(lastTime) {
-    if(prevTime == 0 ) prevTime = lastTime;
-	requestAnimationFrame( animate );
-    var timeDiff = (lastTime - prevTime)/1000.0;
-    prevTime = lastTime;
 
-    //update the mouse position...
-    var vector = new THREE.Vector3( mouseX, mouseY, 0.0 );
-	projector.unprojectVector( vector, camera );
-
-	var ray = new THREE.Ray( camera.position, vector.subSelf( camera.position ).normalize() );
-    worldMouse = ray.intersectObject(projPlane)[0];
-
-   /* var test = ray.intersectObjects(spawnedCharacters);
-    if(test.length>0){
-        console.log(test.length);
-        console.log(test);
-    }*/
-
-    if(worldMouse) {
-
-        player.target = worldMouse.point;
-    }
-
+animateWorld = function(timeDiff){
     scene.phys.update();
     tickProjectiles(timeDiff);
-    animateProjParticles(timeDiff);
+    animateProjParticles(timeDiff);  
 
-    for(var character,i = 0; character = spawnedCharacters[i]; i++)
-    {
+    for(var character, i = 0; character = spawnedCharacters[i]; i++) {
         character.live(timeDiff);
     }
 
-    //update gui stuff...
-    if(player.weapon&&player.weapon.currentClip){
-        if( $('#playerClip:hidden')[0]) $('#playerClip').show();
-        if(player.weapon.lastClip===undefined) player.weapon.lastClip = player.weapon.currentClip+1;
-        if(player.weapon.lastClip!==player.weapon.currentClip){
-            updateClipDisplay(player);
-            player.weapon.lastClip = player.weapon.currentClip;
-        }
-    } else { if($('#playerClip:visible')[0]) $('#playerClip').hide(); };
 
+//update gui stuff...
+
+    if(player.weapon && player.weapon.currentClip) {        
+            if($('#playerClip:hidden')[0])
+                $('#playerClip').show();
+            if(player.weapon.lastClip === undefined)
+                player.weapon.lastClip = player.weapon.currentClip + 1;
+            if(player.weapon.lastClip !== player.weapon.currentClip) {
+                updateClipDisplay(player);
+                player.weapon.lastClip = player.weapon.currentClip;
+            }
+    } else {
+        if($('#playerClip:visible')[0]) {
+            $('#playerClip').hide();
+        }
+    };
 
     //correct for terrain cheat
     var pos;
-    for(var character,i =0;character = spawnedCharacters[i];i++)
-    {
+    for(var character, i = 0; character = spawnedCharacters[i]; i++) {
         pos = character.getPos();
-        pos.z = currentTile.getHeight(pos.x,pos.y)+(this.dead?60:50);
+        pos.z = currentTile.getHeight(pos.x, pos.y) + (this.dead ? 60 : 50);
     }
 
-	render();
-	stats.update();
+} 
+
+var prevTime = 0;
+function animate(lastTime) {
+    // update the time
+    if(prevTime == 0)
+        prevTime = lastTime;
+    requestAnimationFrame(animate);
+    var timeDiff = (lastTime - prevTime) / 1000.0;
+    prevTime = lastTime;
+
+    //update the mouse position...
+    if(camera) {
+        var vector = new THREE.Vector3(mouseX, mouseY, 0.0);
+        projector.unprojectVector(vector, camera);
+
+        var ray = new THREE.Ray(camera.position, vector.subSelf(camera.position).normalize());
+        worldMouse = ray.intersectObject(projPlane)[0];
+
+        if(worldMouse) {
+
+            player.target = worldMouse.point;
+        }
+
+        if(!paused) {
+            animateWorld(timeDiff);
+        }
+        
+        render();
+        stats.update();
+
+    }
+
 }
 
 function render() {
