@@ -6,7 +6,7 @@ Start/pause screen
 		START NEW GAME 
 			 
 *weapon select
-	update clip display 
+	*update clip display 
 *fix melee for small characters
 particles for gore and structure hits
 structure class

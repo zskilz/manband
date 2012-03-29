@@ -326,7 +326,10 @@ function initGame() {
     //document.addEventListener( 'touchstart', onDocumentTouchStart, false );
     //document.addEventListener( 'touchmove', onDocumentTouchMove, false );
     
+    initProjectileParticleGeom();
+    
     newGame(container);
+    
     
 }
 
@@ -384,6 +387,7 @@ function animate(lastTime) {
 
     scene.phys.update();
     tickProjectiles(timeDiff);
+    animateProjParticles(timeDiff);
 
     for(var character,i = 0; character = spawnedCharacters[i]; i++)
     {

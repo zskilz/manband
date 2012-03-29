@@ -94,6 +94,9 @@ makeSprite = function(code, size, color, pos) {
     sprite.uvScale = ASCIITexture.uvScale;
     sprite.scale.set(size / ASCIITexture.canvasSize.x, size / ASCIITexture.canvasSize.y, 1);
 
+    if(color === undefined)
+        color = [0, 1, 1];
+
     sprite.color.setHSV(color[0], color[1], color[2]);
 
     if(pos)
@@ -114,7 +117,7 @@ hitLineSeg = function(callback, origin, dir, tPos, tSize, lineLength) {
         if(dir.dot(tDist) > 0) {//2nd HIT condition!! object in front
             //obj.sprite.color.setHSV(0,0.2,1);
             tDist = tDist.length();
-            if(lineLength > (tDist - tSize/2) ) {//final condition for melee...
+            if(lineLength > (tDist - tSize / 2)) {//final condition..
                 //obj.sprite.color.setHSV(0.2,1,1);
                 callback();
                 return true;
