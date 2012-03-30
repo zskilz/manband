@@ -371,11 +371,15 @@ Character.prototype.doAttack = function(timeDiff)
     this.wepExt = this.weapon.data.wepExt;
 }
 
-Character.prototype.takeHit = function(force,hp)
+Character.prototype.takeHit = function(hitter,force,hp)
 {
-
+    if(this.target === undefined){
+        this.target = hitter;
+        this.charState = charStates.engage;
+    }
+        
     this.HP -= hp;
-    this.getBody().accelerate((force.x*hp)*1000,(force.y*hp)*1000,0);
+    this.getBody().accelerate((force.x*hp)*700,(force.y*hp)*700,0);
     makeProjParticleImpact([0, 0.8, 0.5], this.getPos(), force);
     console.log("Ouch "+hp+" damage taken, "+this.HP+" HP left.");
     if(this.HP < 0)
@@ -454,9 +458,9 @@ Character.prototype.live = function(timeDiff)
                     for(var i = 0, obj; obj = spawnedCharacters[i]; i++) {
                         //obj.sprite.color.setHSV(0,1,1);
                         if((obj != this)&&(!obj.dead)) {
-                            
+                            var disTing = this;
                             hitLineSeg(function() {
-                                obj.takeHit(aimDir, dp);
+                                obj.takeHit(disTing,aimDir, dp);
                             }, this.position, aimDir, obj.position, obj.size, weaponExtent);
 
                         }

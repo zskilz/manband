@@ -169,7 +169,7 @@ function newGame(container) {
     });
 
     //make the terrain...
-    currentTile = new TileBlock(100);
+    currentTile = new TileBlock(0,testMap[0][0]);
 
     scene.add(currentTile.tileMesh);
     directionalLight.target = currentTile.tileMesh;

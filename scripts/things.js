@@ -50,7 +50,7 @@ var creatureClasses =  {
             hp:{M:50,m:10},
             dex:{M:15,m:2},
             str:{M:20,m:10},
-            spd:{M:15,m:2},
+            spd:{M:35,m:2},
             },
         arm: false,
         wear: false,
@@ -90,8 +90,8 @@ weaponClasses = {
     ')' : {
         name: 'Bow',
         desc: 'Sturdy long rage weapon with a slow rate of fire.',
-        dp: {M:25,m:10},
-        fa: {M:0.01,m:0.2},
+        dp: {M:15,m:7},
+        fa: {M:0.01,m:0.1},
         fr:{M:0.9,m:0.4},
         ammo : '|',
         wepExt:0.6,
@@ -101,8 +101,8 @@ weaponClasses = {
     'f' : {
         name: 'Revolver',
         desc: 'Long rage weapon with a slow rate of fire.',
-        dp: {M:35,m:15},
-        fa: {M:0.03,m:0.3},
+        dp: {M:25,m:10},
+        fa: {M:0.03,m:0.2},
         fr:{M:4.9,m:2.4},
         clip:{M:14,m:6},
         rl:{M:1,m:3},
@@ -114,9 +114,9 @@ weaponClasses = {
     'F' : {
         name: 'MP41',
         desc: 'Deadly spray&pray weapon.',
-        dp: {M:35,m:15},
-        fa: {M:0.1,m:0.6},
-        fr:{M:10.0,m:6.0},
+        dp: {M:18,m:4},
+        fa: {M:0.09,m:0.6},
+        fr:{M:11.0,m:7.0},
         clip:{M:40,m:20},
         rl:{M:1,m:2.5},
         ammo : '\'',
@@ -127,8 +127,8 @@ weaponClasses = {
     '!' : {
         name: 'Club',
         desc: 'Unweildy, dangerous wooden thing.',
-        dp: {M:35,m:10},
-        fr: {M:0.9,m:0.4},
+        dp: {M:15,m:6},
+        fr: {M:1.5,m:0.8},
         wepExt:1.3,
         size:50
         },
@@ -143,7 +143,7 @@ weaponClasses = {
     'p' : {
         name: 'Fist',
         desc: 'Hand made into a ball and thrust at opponent.',
-        dp: {M:15,m:5},
+        dp: {M:8,m:3},
         fr: {M:1.7,m:1.5},
         wepExt:1.1,
         size:25
@@ -152,7 +152,7 @@ weaponClasses = {
         name: 'Mouth',
         desc: 'Nom.',
         dp: {M:19,m:8},
-        fr: {M:1.7,m:0.5},
+        fr: {M:1.7,m:1},
         wepExt:1,
         size:20
         },
@@ -163,13 +163,13 @@ ammoClasses = {
     '|' : {
         name: 'Arrow',
         desc: 'Small thin stick with metal head and feathered rear. Ammo for bows.',
-        dp:{M:10,m:5},
+        dp:{M:7,m:3},
         spd:{M:60,m:40}
         },
     '\'':{
         name: 'Bullet',
         desc: 'Metal slug. Ammo for guns.',
-        dp:{M:10,m:5},
+        dp:{M:10,m:3},
         spd:{M:100,m:70}
         }
 }

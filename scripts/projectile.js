@@ -123,13 +123,14 @@ Projectile.prototype.tick = function(timeDiff) {
     var dir = this._dir;
     var thisProj = this;
     var hit;
+    var shooter = this.shooter;
     //var dir = new THREE.Vector3().copy(this._v);//.normalize();
 
     //try hit characters
     for(var i = 0, obj; obj = spawnedCharacters[i]; i++) {
         if(!obj.dead && (obj !== this.shooter)) {
             hit = hitLineSeg(function() {
-                obj.takeHit(dir, dp);
+                obj.takeHit(shooter,dir, dp);
 
                 thisProj.remove();
             }, pos, dir, obj.position, obj.size, this._spd * timeDiff);
