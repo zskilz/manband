@@ -57,10 +57,11 @@ animateProjParticles = function(timeDiff) {
             i--;
         } else {
             particles._timeToLive -= timeDiff;
-            var fact = (particles._timeToLive - 1);
+            var fact = (1-particles._timeToLive);
+            fact = Math.sqrt(fact);
             particles.scale.set(fact, fact, fact);
             //particles.position.addSelf(particles._dir);
-            particles.material.opacity = (1 - fact) ;
+            particles.material.opacity = ( particles._timeToLive) ;
         }
 
     }

@@ -1,10 +1,19 @@
-Start/pause screen
-	accessed with the "esc" key or by clicking on "menu"
+*Start/pause screen
+	*accessed with the "esc" key or by clicking on "menu"
 	load some scene for bg - at init
 	options: 
 		CONTINUE - not available if no game started...
-		START NEW GAME 
-			 
+		*START NEW GAME 
+
+ledgend/help screen.	
+
+fix ammo display - showing mystery ammo
+	add reload counter bar.	
+	
+BUGs:
+	dead characters still take damage! NOOoo!
+	restarting game keeps weapon selection...
+	 
 *weapon select
 	*update clip display 
 *fix melee for small characters

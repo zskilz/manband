@@ -453,7 +453,7 @@ Character.prototype.live = function(timeDiff)
                     
                     for(var i = 0, obj; obj = spawnedCharacters[i]; i++) {
                         //obj.sprite.color.setHSV(0,1,1);
-                        if(obj != this) {
+                        if((obj != this)&&(!obj.dead)) {
                             
                             hitLineSeg(function() {
                                 obj.takeHit(aimDir, dp);

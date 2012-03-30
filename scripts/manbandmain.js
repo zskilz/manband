@@ -117,6 +117,12 @@ mouseWheelEventHandler = function(event, delta, deltaX, deltaY) {
 
 
 function newGame(container) {
+    if(!paused)
+        paused = true;
+    
+    if(scene)
+        delete scene;
+    
     shadowMaterial = new THREE.MeshDepthMaterial({
         opacity : 0.0
     });
