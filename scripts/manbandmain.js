@@ -24,7 +24,15 @@ var stats,
 var keyMap = {};
 var gameCntrls = ['left', 'right', 'up', 'down', 'attack'];
 //default keys.
-var gameKeys = [37, 39, 38, 40, 64];
+
+
+var gameKeys = [[65, 37], 
+                [68, 39], 
+                [87, 38],
+                [83, 40], 
+                [32, 96]];
+
+
 //order matters, and need same amount as gameCntrls.
 var cntrlMap = {};
 //setup cntrlMap
@@ -36,9 +44,11 @@ var cntrlMap = {};
 
 checkKey = function(key)//todo: this can be expanded to deal with multiple bindings and not just keys. mouse buttons etc. also
 {
-    if(gameKeys.indexOf(key)==-1)
-        return false;
-    return true;
+    for(var i = 0,keys;keys=gameKeys[i];i++){
+        if(keys.indexOf(key)!==-1)
+            return keys;
+    }    
+    return false;
 }
 
 resizeRenderer = function() {
@@ -283,6 +293,46 @@ function initGame() {
 
     container = $('#mainStage');
     //$('body').append( container );
+    
+    //create the ledgend..
+    var htmlLegend = $('<div/>');
+
+ 
+
+    var addLegend = function(htmlParent, lootClass, heading) {
+
+        var ledgend = $('<div>' + heading + '</div>');
+        
+        $.each(lootClass, function(lootKey, lootVal) {
+            var legendHTML = '<div class="legend0">' + lootKey + '</div>';
+            legendHTML += '<div class="legend1">' + lootVal.name + '</div>';
+            legendHTML += '<div class="legend2">' + lootVal.desc + '</div>';
+            ledgend.append('<div>'+legendHTML+'</div>' );
+        });
+        htmlParent.append(ledgend);
+    };
+
+
+
+    
+    addLegend(htmlLegend,creatureClasses,"CREATURES");
+    addLegend(htmlLegend,weaponClasses,"WEAPONS");
+    addLegend(htmlLegend,ammoClasses,"AMMO");
+    addLegend(htmlLegend,pickupClasses,"PICKUPS");
+    
+    
+    $('#helpDisplay').hide();
+    $('#helpDisplay').append(htmlLegend);
+    
+    $('#helpThing').click(function(){
+        if($('#helpDisplay:visible').length){
+            $('#helpDisplay').hide()
+        }else{
+            $('#helpDisplay').show()
+        };
+    });
+   
+    //three.js init 
 
     renderer = new THREE.WebGLRenderer({
         clearAlpha : 1
@@ -307,7 +357,10 @@ function initGame() {
     container.on('contextmenu', function() {
         return false;
     });
-
+    
+    
+        
+    // keyboard handlers
     $(document).keydown(function(e) {
 
         if(e.which === 27) {
@@ -324,17 +377,19 @@ function initGame() {
             
             return;
         }
-
-        if(checkKey(e.which)) {
-            keyMap[e.which] = true;
+        var key;
+        if(key = checkKey(e.which)) {
+            
+            keyMap[key] = true;
             e.preventDefault();
         }
 
     });
 
     $(document).keyup(function(e) {
-        if(checkKey(e.which)) {
-            keyMap[e.which] = false;
+        var key;
+        if(key = checkKey(e.which)) {
+            keyMap[key] = false;
             e.preventDefault();
         }
 

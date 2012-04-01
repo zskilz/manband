@@ -107,7 +107,8 @@ Projectile.prototype = new Object();
 Projectile.prototype.constructor = Projectile;
 
 Projectile.prototype.remove = function() {
-    scene.remove(this.sprite);
+    var sprite = this.sprite;
+    scene.remove(sprite);
     var ind = projectiles.indexOf(this);
     projectiles.splice(ind, 1);
     delete this;

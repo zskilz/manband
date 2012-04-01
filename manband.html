@@ -32,6 +32,14 @@
 				top: 30px;
 				left: 155px;
 			}
+			#helpThing {
+				position: absolute;
+				top: 12px;
+				left: 91px;
+				z-index: 1;
+				background: rgba(234, 234, 234, 0.5);
+				font-family: arial, helvetica;
+			}
 			#mainMenu {
 				position: absolute;
 				top: 30px;
@@ -45,13 +53,30 @@
 			.currWeapon {
 				background: #555500;
 			}
-			.menuItem{
+			.menuItem {
 				cursor: pointer;
 				display: block;
 			}
-			.menuItem:hover{
+			.menuItem:hover {
 				background: rgba(255,0,0,0.2);
 				cursor: pointer;
+			}
+			.legend0, .legend1, .legend2 {
+				border: 1px black solid;
+				display: table-cell;
+				padding: 1px 5px;	
+			}
+			.legend0 {
+				width: 20px;
+				text-align: center;
+				font-family: monospace;
+				font-size: 15px;
+			}
+			.legend1 {
+				width: 100px;
+			}
+			.legend2 {
+				width: 400px;
 			}
 		</style>
 		<script src="scripts/contrib/jquery-1.7.1.js"></script>
@@ -79,6 +104,19 @@
 		<div id="mainStage"></div>
 		<div id="weaponSelect"></div>
 		<div id="playerClip"></div>
+		<div id="helpThing">
+			<p>HELP</p>
+			<div id='helpDisplay'>
+				Click anywhere on this help display to close it..<br/>
+				<p>
+					Welcome to this gameplay expriment by <a href="http://zskilz.blogspot.com">zskilz</a>, currently called "manband".
+				</p>
+				<p>
+					<b>Instructions:</b> Use the mouse to look. Use the arrow or aswd keys to move. Clicking attacks. Use the scroll wheel
+					to change weapons.
+				</p>
+			</div>
+		</div>
 		<div id="mainMenu">
 			<!--a id="continue" class="menuItem">Continue</a-->
 			<a id="startNew" class="menuItem">Start New Game</a>

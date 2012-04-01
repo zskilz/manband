@@ -5,13 +5,16 @@
 		CONTINUE - not available if no game started...
 		*START NEW GAME 
 
-ledgend/help screen.	
+*ledgend/help screen.	
+
+support multiple key bindings.
 
 fix ammo display - showing mystery ammo
 	add reload counter bar.	
 	
 BUGs:
-	dead characters still take damage! NOOoo!
+	*dead characters still take damage! NOOoo!
+	*floating weapon sprites (from async deletion bug).
 	restarting game keeps weapon selection...
 	 
 *weapon select
