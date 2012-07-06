@@ -25,7 +25,7 @@ var keyMap = {};
 var gameCntrls = ['left', 'right', 'up', 'down', 'attack'];
 //default keys.
 
-
+// arrow keys and asdw
 var gameKeys = [[65, 37], 
                 [68, 39], 
                 [87, 38],
@@ -134,8 +134,13 @@ function newGame(container) {
         delete scene;
     
     shadowMaterial = new THREE.MeshDepthMaterial({
-        opacity : 0.0
-    });
+        
+        transparent  : true,
+        opacity : 0.0,
+        depthTest  : false,
+        depthWrite : true,
+        });
+
     //shadowMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) ;
 
     projector = new THREE.Projector();
@@ -151,7 +156,9 @@ function newGame(container) {
         transparent : true,
         wireframe : true
     }));
-    projPlane.lookAt(camera.position);
+    //projPlane.lookAt(camera.position);
+    //projPlane.rotate();
+    projPlane.rotation.x = Math.PI/2.0;
     projPlane.visible = true;
     scene.add(projPlane);
     //addSun(scene);
@@ -180,12 +187,11 @@ function newGame(container) {
 
     //make the terrain...
     currentTile = new TileBlock(0,testMap[0][0]);
-
+    currentTile.tileMesh.rotation.x = Math.PI/2.0;
     scene.add(currentTile.tileMesh);
     directionalLight.target = currentTile.tileMesh;
 
-    //init the character textrure source
-    ASCIITexture = ASCIITextSrc();
+
     //init the sprites
     var teamColor = {
         'us' : [0.3, 1, 1],
@@ -287,6 +293,9 @@ var gui;
 function initGame() {
     if(!Detector.webgl)
         Detector.addGetWebGLMessage();
+        
+    //init the character textrure source
+    ASCIITexture = ASCIITextSrc();
 
     var container;
     //var particles, geometry;

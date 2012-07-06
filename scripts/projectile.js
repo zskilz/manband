@@ -10,7 +10,7 @@ initProjectileParticleGeom = function() {
         y = (Math.random() - 0.5) * 50;
         z = (Math.random() - 0.5) * 50;
         vector = new THREE.Vector3(x, y, z);
-        projParticleData.geometry.vertices.push(new THREE.Vertex(vector));
+        projParticleData.geometry.vertices.push(vector);
 
     }
     //make a small white square

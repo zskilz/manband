@@ -112,7 +112,7 @@ weaponClasses = {
         rotOffset:Math.PI
         },
     'F' : {
-        name: 'MP41',
+        name: 'MP40',
         desc: 'Deadly spray&pray weapon.',
         dp: {M:18,m:4},
         fa: {M:0.09,m:0.6},

@@ -28,8 +28,8 @@ function ASCIITextSrc(params) {
     if(params.fontMods === undefined)
         params.fontMods = 'bold';
 
-    var canvas = document.createElement('canvas');
-    //var canvas = $('#ASCIICanvasRender')[0];
+    //var canvas = document.createElement('canvas');
+    var canvas = $('#ASCIICanvasRender')[0];
 
     var codeBuffer = makeCodeBuffer();
 
@@ -41,12 +41,13 @@ function ASCIITextSrc(params) {
     };
 
     var context = canvas.getContext('2d');
-    //context.fillStyle = 'rgba(255,0,0,0.2)';
-    //context.fillRect(0, 0, params.canvasSize.x, params.canvasSize.y);
+    context.fillStyle = 'rgba(255,255,255,0.0)';
+    context.fillRect(0, 0, params.canvasSize.x, params.canvasSize.y);
     context.font = params.fontMods + ' ' + params.fontHeight + 'px ' + params.fontFamily;
     context.textBaseline = 'middle';
     context.textAlign = 'center';
     context.fillStyle = 'white';
+    
 
     //var tW,fontWidth = 0;
 

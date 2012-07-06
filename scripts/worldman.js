@@ -63,7 +63,7 @@ TileBlock = function(id, params) {
 
     for(var vertex, i = 0; vertex = geometry.vertices[i]; i++) {
 
-        vertex.position.z = this.tileData[i];
+        vertex.y = this.tileData[i];
 
     }
     geometry.computeFaceNormals();
